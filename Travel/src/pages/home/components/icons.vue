@@ -59,8 +59,7 @@ export default {
             overflow: hidden;
             float: left;
             width: 25%;
-            height: 0;
-            padding-bottom: 25%;
+            min-height: 1.8rem;
             .icon-img{
                 position: absolute;
                 top: 0;
