@@ -17,6 +17,8 @@
 <script>
 export default {
   name: "HomeRecommend",
+  // 子组件接受父组件传过来的值
+  // 指定传值类型
   props: {
     list: Array
   }

@@ -2,7 +2,7 @@
   <div>
     <div class="title">周末去哪儿</div>
     <ul>
-      <li class="item border-bottom" v-for="item of list" :key="item.id">
+      <li class="item border-bottom" v-for="item in list" :key="item.id">
         <div class="item-img-wrapper">
           <img class="item-img" :src="item.imgUrl" />
         </div>
@@ -18,6 +18,8 @@
 <script>
 export default {
   name: "HomeWeekend",
+  // 子组件接受父组件传过来的值
+  // 指定传值类型
   props: {
     list: Array
   }
@@ -25,6 +27,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+// 引入外部文件  在前面加 ~
+// 使用less需要安装less依赖
 @import url("~styles/ellipsis.less");
 
 .title {
@@ -40,18 +44,18 @@ export default {
   .item-img {
     width: 100%;
   }
-  .item-info {
-    padding: 0.1rem;
-    .item-title {
-      line-height: 0.54rem;
-      font-size: 0.32rem;
-      .ellipsis();
-    }
-    .item-desc {
-      line-height: 0.4rem;
-      color: #ccc;
-      .ellipsis();
-    }
+}
+.item-info {
+  padding: 0.1rem;
+  .item-title {
+    line-height: 0.54rem;
+    font-size: 0.32rem;
+    .ellipsis();
+  }
+  .item-desc {
+    line-height: 0.4rem;
+    color: #ccc;
+    .ellipsis();
   }
 }
 </style>
