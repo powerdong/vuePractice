@@ -20,6 +20,7 @@ import HomeWeekend from './components/Weekend';
 // 引入axios
 import axios from 'axios';
 
+import { mapState } from 'vuex';
 export default {
     // 组件的名字
     name:"Home",
@@ -34,23 +35,25 @@ export default {
     data() {
         return {
             // 父组件定义名字
-            city:'',
             swiperList:[],
             iconList:[],
             recommendList:[],
-            weekendList:[]
+            weekendList:[],
+            lastCity:''
         }
+    },
+    computed: {
+        ...mapState(['city'])
     },
     methods: {
         getHomeInfo() {
-            axios.get('../../../static/mock/index.json')
+            axios.get('../../../static/mock/index.json?city='+ this.city)
                     // 成功执行函数
                     .then(this.getHomeInfoSuc)
         },
         getHomeInfoSuc(res){
             res = res.data;
             if(res.ret && res.data){
-                this.city = res.data.city,
                 this.swiperList = res.data.swiperList,
                 this.iconList = res.data.iconList,
                 this.recommendList = res.data.recommendList,
@@ -61,7 +64,14 @@ export default {
     // 声明周期的钩子函数
     // 渲染完成执行函数
     mounted() {
+        this.lastCity = this.city
         this.getHomeInfo();
+    },
+    activated() {
+        if(this.lastCity !== this.city){
+            this.lastCity = this.city;
+            this.getHomeInfo();
+        }
     },
 }
 </script>
