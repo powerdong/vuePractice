@@ -19,14 +19,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: "HomeHeader",
-  // 子组件接受父组件传过来的值
-  // 指定传值类型
-  props: {
-    city: String
-  }
+  computed: {
+    ...mapState(['city'])
+  },
 };
+
 </script>
 
 <style lang="less" scoped>
@@ -54,7 +54,7 @@ export default {
     background-color: #fff;
   }
   .header-right {
-    width: 1.04rem;
+    min-width: 1.04rem;
     padding: 0 0.1rem;
     color: #fff;
   }

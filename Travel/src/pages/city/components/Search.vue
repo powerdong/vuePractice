@@ -4,66 +4,75 @@
       <input v-model="keyword" type="text" placeholder="请输入城市名或拼音" class="search-input" />
     </div>
     <div class="search-content" ref="search" v-show="keyword">
-        <ul>
-            <li 
-                class="search-item border-bottom"
-                v-for="(item, index) in list" 
-                :key="index"
-            >
-            {{item.name}}
-            </li>
-            <li class="search-item border-bottom" v-show="hasNoData">
-                没有找到匹配内容
-            </li>
-        </ul>
+      <ul>
+        <li
+          class="search-item border-bottom"
+          v-for="(item, index) in list"
+          :key="index"
+          @click="changeState(item.name)"
+        >{{item.name}}</li>
+        <li class="search-item border-bottom" v-show="hasNoData">没有找到匹配内容</li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import Bscroll from 'better-scroll';
+import Bscroll from "better-scroll";
+import {mapMutations} from 'vuex';
+
 export default {
   name: "citySearch",
-  props:{
-      cities:Object
+  props: {
+    cities: Object
   },
   data() {
     return {
       keyword: "",
-      list:[],
-      timer:null
+      list: [],
+      timer: null
     };
   },
   computed: {
-      hasNoData(){
-          return !this.list.length
-      }
+    hasNoData() {
+      return !this.list.length;
+    }
   },
   watch: {
-      keyword(){
-          if(this.timer){
-              clearTimeout(this.timer)
-          }
-          if(!this.keyword){
-              this.list = [];
-              return;
-          }
-          this.timer = setTimeout(() => {
-              const result = [];
-              for (const i in this.cities) {
-                this.cities[i].forEach(value => {
-                    if(value.spell.indexOf(this.keyword) > -1 || value.name.indexOf(this.keyword) > -1){
-                        result.push(value);
-                    }
-                })
-              }
-              this.list = result;  
-          }, 100);
+    keyword() {
+      if (this.timer) {
+        clearTimeout(this.timer);
       }
+      if (!this.keyword) {
+        this.list = [];
+        return;
+      }
+      this.timer = setTimeout(() => {
+        const result = [];
+        for (const i in this.cities) {
+          this.cities[i].forEach(value => {
+            if (
+              value.spell.indexOf(this.keyword) > -1 ||
+              value.name.indexOf(this.keyword) > -1
+            ) {
+              result.push(value);
+            }
+          });
+        }
+        this.list = result;
+      }, 100);
+    }
+  },
+  methods: {
+    changeState(city) {
+      this.changeCity(city);
+      this.$router.push("/");
+    },
+    ...mapMutations(["changeCity"])
   },
   mounted() {
-      this.scroll = new Bscroll(this.$refs.search)
-  },
+    this.scroll = new Bscroll(this.$refs.search);
+  }
 };
 </script>
 
@@ -84,20 +93,20 @@ export default {
     color: #666;
   }
 }
-.search-content{
-    z-index: 1;
-    overflow: hidden;
-    position: absolute;
-    top: 1.58rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #eee;
-    .search-item{
-        line-height: .62rem;
-        padding-left: .2rem;
-        background-color: #fff;
-        color: #666;
-    }
+.search-content {
+  z-index: 1;
+  overflow: hidden;
+  position: absolute;
+  top: 1.58rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #eee;
+  .search-item {
+    line-height: 0.62rem;
+    padding-left: 0.2rem;
+    background-color: #fff;
+    color: #666;
+  }
 }
 </style>
