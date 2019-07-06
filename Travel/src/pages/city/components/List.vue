@@ -1,5 +1,5 @@
 <template>
-  <div class="list" ref=wrapper>
+  <div class="list" ref="wrapper">
     <div>
       <div class="area">
         <div class="title border-topbottom">当前城市</div>
@@ -12,15 +12,32 @@
       <div class="area">
         <div class="title border-topbottom">热门城市</div>
         <div class="button-list">
-          <div class="button-wrapper">
-            <div class="button">北京</div>
+          <div 
+                class="button-wrapper" 
+                v-for="(item, index) in hot" 
+                :key="index"
+            >
+            <div class="button" >
+            {{item.name}}
+            </div>
           </div>
         </div>
       </div>
-      <div class="area">
-        <div class="title border-topbottom">A</div>
+      <div 
+            class="area"
+            v-for="(items, index) in list" 
+            :key="index"
+            :ref="index"    
+        >
+        <div class="title border-topbottom">{{index}}</div>
         <div class="item-list">
-          <div class="item border-bottom"></div>
+          <div 
+                class="item border-bottom"
+                v-for="(item, index) in items" 
+                :key="index"
+            >
+            {{item.name}}
+        </div>
         </div>
       </div>
     </div>
@@ -31,8 +48,21 @@
 import Bscroll from 'better-scroll';
 export default {
   name: "cityList",
+  props:{
+      list:Object,
+      hot:Array,
+      letter:String
+  },
   mounted() {
-      this.scroll = new Bscroll(this.$ref.wrapper)
+      this.scroll = new Bscroll(this.$refs.wrapper)
+  },
+  watch: {
+      letter(){
+          if(this.letter){
+              const element = this.$refs[this.letter][0];
+              this.scroll.scrollToElement(element);
+          }
+      }
   },
 };
 </script>
@@ -71,7 +101,7 @@ export default {
     padding: 0.1rem 0.6rem 0.1rem 0.1rem;
     .button-wrapper {
       float: left;
-      width: 33.3%;
+      width: 33.33%;
       .button {
         margin: 0.1rem;
         padding: 0.1rem 0;
